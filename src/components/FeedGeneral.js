@@ -81,15 +81,11 @@ const FeedGeneral = ({usuarioGlobal}) => {
         
     }
 
-    
-
-    const like = async(id)=>{        
-
+    const like = async(id)=>{    
         const docRef = collection(db, 'Twits');
-        let newCount = 0;
         const obj = {  
             id: id,
-           cont:newCount += 1,
+           cont:1,
            };
         await updateDoc(doc(docRef, id), obj)
   }
