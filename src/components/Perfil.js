@@ -15,6 +15,8 @@ const firestore = getFirestore(firebaseApp);
 const Perfil = ({ usuarioGlobal,correoUsuario}) =>{
 
 const [ListaComentarios, setListaComentarios] = useState([]);
+const [ListaComentarios1, setListaComentarios1] = useState([]);
+
 const [user, setUser] = useState([]);
 const idU = usuarioGlobal.email
 
@@ -32,7 +34,22 @@ useEffect(()=>{
         }
     }
     getTwits()
-},[ListaComentarios])
+
+
+    const getTwits1 = async()=>{
+        try {
+          const querySnapshot = await getDocs(query(collection(db, "Twits"),where("correo", "==", idU),where("cont", "==", 1)))  
+          const docs = []
+          querySnapshot.forEach((doc)=>{
+              docs.push({...doc.data(),id:doc.id})
+          })
+          setListaComentarios1(docs)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    getTwits1()
+},[ListaComentarios],[ListaComentarios1])
 
 useEffect(()=>{
     const getUsers = async()=>{
@@ -86,7 +103,7 @@ return (<div className="login2">
                     </div>
                     <div className="textoU2">
                         <p>{list.comentario}</p>
-                        <p className="heart"><AiFillHeart/> 0</p>
+                        <p className="heart"><AiFillHeart/> {list.cont}</p>
                     </div>
                         </div>
                     </div>
@@ -95,7 +112,26 @@ return (<div className="login2">
             </div>  
         </Tab>
         <Tab eventKey="second" title="FAVORITOS">
-          Hii, I am 2nd tab content
+        <div className="ListComents">
+            {ListaComentarios1.map(list=>(
+        <div key={list.id}>
+            <div className="cabecera">
+                <img  src={list.foto} className="FotoUser"/>
+                    <div className="textoU">
+                    <div className="textoU1">
+                    <p className="u" style={{background: list.usuario[0].color}}>{list.usuario[0].user}</p>
+                    <p className="fecha">{list.Fecha}</p>
+                    <button className="btnDelete" onClick={()=>deleteUser(list.id)}><AiOutlineDelete/></button>
+                    </div>
+                    <div className="textoU2">
+                        <p>{list.comentario}</p>
+                        <p className="heart"><AiFillHeart/> {list.cont}</p>
+                    </div>
+                        </div>
+                    </div>
+                </div>   
+                ))}
+            </div>  
         </Tab>
       </Tabs>
            
