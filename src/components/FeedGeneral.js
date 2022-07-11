@@ -83,7 +83,7 @@ const FeedGeneral = ({usuarioGlobal}) => {
     const deleteUser = async(id)=>{
         if (window.confirm("Esta seguro de eliminar este comentario")) {
             setIsLoading(true);
-            const colRef = collection(db,"Twits");
+            const colRef = collection(db, "Twits");
             await deleteDoc(doc(colRef,id));
             setIsLoading(false);
           }  
