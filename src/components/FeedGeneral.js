@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import LoadingSpinner from "./LoadingSpinner";
 import firebaseApp, { db } from "../firebase";
 import {deleteUser, getAuth,signOut} from "firebase/auth";
-import {getFirestore,collection,addDoc,getDocs,where,query,deleteDoc,doc,setDoc,updateDoc,orderBy} from '@firebase/firestore';
+import {getFirestore,collection,addDoc,getDocs,where,query,deleteDoc,doc,setDoc,updateDoc,orderBy,getDoc} from '@firebase/firestore';
 
 const auth = getAuth(firebaseApp);
 const firestore = getFirestore(firebaseApp);
@@ -14,6 +14,7 @@ const FeedGeneral = ({usuarioGlobal}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [comentario, setComentario] = useState("");
     const [ListaComentarios, setListaComentarios] = useState([]);
+    const [ListaComentario, setListaComentario] = useState([]);
     const [ListaFavoritos, setListaFavoritos] = useState([]);
     const MESES = [ "Enero","Febrero", "Marzo", "Abril", "Mayo","Junio","Julio","Agosto", "Septiembre", "Octubre","Noviembre","Diciembre",];
     const diaActual = new Date();
@@ -133,7 +134,9 @@ const FeedGeneral = ({usuarioGlobal}) => {
                     <div className="textoU1">
                     <p className="u" style={{background: list.usuario[0].color}}>{list.usuario[0].user}</p>
                     <p className="fecha">{list.Fecha}</p>
+                    {list.correo === usuarioGlobal?.email ? (
                     <button className="btnDelete" onClick={()=>deleteUser(list.id)}><AiOutlineDelete/></button>
+                    ) : null}
                     </div>
                     <div className="textoU2">
                         <p>{list.comentario}</p>
